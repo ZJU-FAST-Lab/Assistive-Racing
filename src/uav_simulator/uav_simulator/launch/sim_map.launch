@@ -1,0 +1,70 @@
+<launch>
+
+    <arg name="init_x" value="0.0"/>
+    <arg name="init_y" value="0.0"/>
+    <arg name="init_z" value="1.0"/> 
+
+    <node pkg ="map_generator" name ="racing_map" type ="racing_map" output = "screen">    
+        <rosparam file="$(find map_generator)/config/gate.yaml" command="load" />
+        <remap from="~odometry"   to="odom"/>
+        <!-- <remap from="~global_cloud"   to="/map_generator/global_cloud"/> -->
+        <remap from="~global_cloud"   to="/map_generator_node/global_map"/>
+        <remap from="~local_cloud"   to="/map_generator/local_cloud"/>
+        <remap from="~polyhedra"   to="/drone0/polyhedra"/>
+
+        <param name="init_state_x"   value="$(arg init_x)"/>
+        <param name="init_state_y"   value="$(arg init_y)"/>
+        <param name="init_state_z"   value="$(arg init_z)"/>
+        <param name="map/x_size"     value="300" />
+        <param name="map/y_size"     value="300" />
+        <param name="map/z_size"     value="20" />
+        <param name="map/resolution" value="0.4"/>  
+        <param name="map/inflate_size" value="0.3"/>  
+
+        <param name="gate_radius" value="3.0"/>       
+        
+        <param name="ObstacleShape/theta" value="0.5"/>        
+
+        <param name="sensing/radius" value="5.0"/>        
+        <param name="sensing/rate"   value="100.0"/>  
+
+        <param name="corridor/l_corridor" value="2.0"/>   
+        <param name="corridor/bbox_width" value="4.0"/>                 
+    </node>
+
+    <node pkg="nodelet" type="nodelet" name="manager" args="manager" output="screen">
+      <param name="num_worker_threads" value="16"/>
+    </node>
+
+    <node pkg="nodelet" type="nodelet" name="so3_quadrotor" args="load so3_quadrotor/Nodelet manager" output="screen">
+      <rosparam file="$(find uav_simulator)/config/so3_quadrotor.yaml"/>
+      <param name="simulation_rate" value="1000" />
+      <param name="init_x" value="0" />
+      <param name="init_y" value="0" />
+      <param name="init_z" value="1" />
+      <remap from="~odom" to="odom"/>
+      <remap from="~imu" to="imu" />
+      <remap from="~so3cmd" to="so3cmd"/>
+      <remap from="~vis" to="vis"/>
+    </node>
+
+    <node pkg="nodelet" type="nodelet" name="so3_controller" args="load so3_controller/Nodelet manager" output="screen">
+      <rosparam file="$(find uav_simulator)/config/so3_controller.yaml"/>
+      <remap from="~odom" to="odom"/>
+      <remap from="~imu" to="imu" />
+      <remap from="~so3cmd" to="so3cmd"/>
+      <remap from="~position_cmd" to="position_cmd"/>
+      <remap from="~joycmd" to="in"/>
+    </node>
+
+    <node pkg="odom_visualization" name="odom_visualization" type="odom_visualization" output="log">
+        <remap from="~odom" to="/odom"/>
+        <param name="color/a" value="1.0"/>
+        <param name="color/r" value="1.0"/>
+        <param name="color/g" value="0.0"/>
+        <param name="color/b" value="0.0"/>
+        <param name="covariance_scale" value="100.0"/>
+        <param name="robot_scale" value="2.0"/>
+    </node>
+
+</launch>

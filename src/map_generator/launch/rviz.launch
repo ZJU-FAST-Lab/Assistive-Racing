@@ -1,0 +1,6 @@
+<launch>
+  <!-- rviz -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find map_generator)/launch/offline.rviz">
+  </node>
+
+</launch>

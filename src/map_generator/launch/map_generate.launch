@@ -1,0 +1,43 @@
+<launch>
+  <arg name="init_x" value="0.0"/>
+  <arg name="init_y" value="0.0"/>
+  <arg name="init_z" value="1.0"/>
+  <arg name="drone_odom" value="odom"/>
+
+  <node pkg ="map_generator" name ="racing_map" type ="racing_map" output = "screen">
+    <rosparam file="$(find plan_manage)/config/gate.yaml" command="load" />
+
+    <remap from="~odometry" to="$(arg drone_odom)"/>
+    <!-- <remap from="~global_cloud" to="/map_generator/global_cloud"/> -->
+    <remap from="~global_trajectory" to="/plan_manage/global_trajectory"/>
+
+    <remap from="~global_cloud" to="/map_generator_node/global_map"/>
+    <remap from="~local_cloud" to="/map_generator/local_cloud"/>
+    <remap from="~polyhedra" to="/plan_manage/tunnel_like_polyhedra"/>
+    <!-- tunnel_like_polyhedra -->
+
+    <param name="init_state_x" value="$(arg init_x)"/>
+    <param name="init_state_y" value="$(arg init_y)"/>
+    <param name="init_state_z" value="$(arg init_z)"/>
+
+    <param name="map/x_size" value="40" />
+    <param name="map/y_size" value="40" />
+    <param name="map/z_size" value="20" />
+
+    <param name="map/resolution" value="0.1"/>
+    <param name="map/inflate_size" value="0.15"/>
+
+    <!-- <param name="gate_radius" value="2.0"/>        -->
+
+    <param name="ObstacleShape/theta" value="0.5"/>
+
+    <param name="sensing/radius" value="5.0"/>
+    <param name="sensing/rate" value="1.0"/>
+
+    <param name="corridor/l_corridor" value="1.0"/>
+    <param name="corridor/bbox_width" value="3.0"/>
+    <param name="corridor/desired_len" value="2.0"/>
+
+  </node>
+
+</launch>

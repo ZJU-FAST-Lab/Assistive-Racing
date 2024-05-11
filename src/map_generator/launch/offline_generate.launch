@@ -1,0 +1,42 @@
+<launch>
+  <arg name="drone_odom" value="odom"/>
+
+  <node pkg ="map_generator" name ="offline_generator" type ="offline_map" output = "screen">
+    <rosparam file="$(find plan_manage)/config/gate.yaml" command="load" />
+    <rosparam file="$(find map_generator)/config/global_params.yaml" command="load" />
+
+    <remap from="~global_trajectory" to="/plan_manage/global_trajectory"/>
+
+    <remap from="~global_cloud" to="/map_generator_node/global_map"/>
+    <remap from="~local_cloud" to="/map_generator/local_cloud"/>
+    <remap from="~polyhedra" to="/plan_manage/tunnel_like_polyhedra"/>
+
+    <param name="pcd_type" value="0" />
+
+    <param name="map/x_size" value="14" />
+    <param name="map/y_size" value="8" />
+    <param name="map/z_size" value="8.4" />
+    <param name="map/resolution" value="0.1"/>
+    <param name="map/inflate_size" value="0.15"/>
+
+    <param name="corridor/l_corridor" value="1.0"/>
+
+    <param name="corridor/bbox_width_x" value="3.0"/>
+    <param name="corridor/bbox_width_y" value="3.0"/>
+    <param name="corridor/bbox_width_z" value="3.0"/>
+    <param name="corridor/desired_len" value="2.0"/>
+
+    <param name="corridor/extend_d_backward" value="0.05"/>
+    <param name="corridor/extend_d_forward" value="0.00"/>
+    <param name="corridor/drone_radius" value="0.15"/>
+
+    <param name="x_floor" value="-40"/>
+    <param name="x_ceil" value="40.0"/>
+    <param name="y_floor" value="-40.0"/>
+    <param name="y_ceil" value="40.0"/>
+    <param name="z_floor" value="0.0"/>
+    <param name="z_ceil" value="10.0"/>
+
+  </node>
+
+</launch>

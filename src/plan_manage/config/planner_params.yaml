@@ -1,0 +1,159 @@
+# Trapezoidal intgral seg num
+K:                           10
+
+debug:                       false
+debug_sleep:                 0.1
+
+#0 for local replan; 1 for global replan
+local_replan_type:           0
+
+alpha_gate_update:           0.7
+
+N_1:                         3
+N_2:                         4
+replan_duration:             0.10
+min_replan_dist:             1.0
+min_replan_duration:         0.16
+min_circle_update_dist:      2.0
+
+# must > 0.0
+# max_vel:                     8.5
+# max_acc:                     10.0
+# max_jrk:                     10.0
+
+max_vel:                     15.0
+max_acc:                     10.0
+max_jrk:                     30.0
+
+thr_max:                     27.5175
+thr_min:                     0.0
+min_thracc:                  0.0
+max_thracc:                  32.373
+obs_radius:                  1.5
+
+rhoT:                        100.0
+rhoTg:                       1000.0
+pnlP:                        10000.0
+pnlV:                        1000.0
+pnlA:                        1000.0
+pnlJ:                        1000.0
+pnlThr:                      100000.0
+pnlGate:                     1000.0
+pnlCone:                     100000000.0
+
+ifAligned:                   true
+pnlAligned:                  10000.0
+
+smoothEps:                   1.0e-2
+
+# for penalizing attitude & drag, only used for fixed-time optimization
+g:                           9.81
+mass:                        0.85
+hor_drag_coeff:              0.4
+ver_drag_coeff:              0.4
+par_drag_coeff:              0.0
+speed_smooth_factor:         0.1
+
+# Joystick related penalty
+rhoAccCmd:                   500.0
+rhoVelCmd:                   500.0
+rhoPosCmd:                   500.0
+# rhoAccCmd:                   0.0
+# rhoVelCmd:                   0.0
+# rhoPosCmd:                   0.0
+
+rc_t_lower_bound:            0.5
+rc_K_fix:                    10
+
+RCthracc_max:                32.0
+
+# rc_velx_max:                 6.0
+# rc_vely_max:                 6.0
+# rc_velz_max:                 5.0
+
+rc_velx_max:                 15.0
+rc_vely_max:                 15.0
+rc_velz_max:                 5.0
+
+Y_dot_max:                   0.005   # pure yaw control
+Y_cmd_dot_max:              0.005   # pure yaw control
+
+# ------------------------------------------------- Risk related ------------------------------------------------- 
+time_threshold:              3.0
+deviate_thrushold:           5000.0
+acc_threshold:               10.0
+threshold_for_assist:        0.60
+threshold_for_prim:          0.80
+
+dist0:                       0.5
+
+minSafeT:                    1.0
+
+risk_vel_max_:               5.0
+risk_acc_max_:               4.0
+
+progress_deviative_up_threshold:       1000.0
+progress_deviative_low_threshold:       500.0
+rc_deviative_up_threshold:            1000.0
+rc_deviative_low_threshold:             500.0
+
+# ------------------------------------------------- yaw plan ---------------------------------------------------------
+if_Auto_Yaw:                 true
+
+pnlyawV:                     1000.0
+pnlyawA:                     1000.0
+pnlyawJ:                     1000.0
+
+# max_yaw_vel:                 2.0
+# max_yaw_acc:                 3.0
+# max_yaw_jrk:                 4.0
+max_yaw_vel:                 1.57
+max_yaw_acc:                 3.0
+max_yaw_jrk:                 10.0
+
+yaw_t_lower_bound:           0.20
+yaw_K_fix:                   10
+
+rhoYawpos:                   1000.0
+rhoYawvel:                   1000.0
+rhoYawacc:                   1000.0
+# rhoYawpos:                   0.0
+# rhoYawvel:                   0.0
+# rhoYawacc:                   0.0
+
+rhoYawT:                     1.0
+pnlYawAligned:               1000000.0 
+
+yawscalar:                   1.0
+init_yaw:                    0.0
+
+# # -------------------------------------------------progress plan---------------------------------------------------------
+replan_horizon:              2.5
+
+T_max_vel:                   2.0
+T_max_acc:                   4.0
+T_max_jrk:                   10.0
+
+dynamicRhoT:                 true
+rhoTProgress:                1000.0
+rhoTrajProgress:             3000.0
+
+pnltV:                       1000.0
+pnltA:                       1000.0
+pnltJ:                       1000.0
+
+rhoTPositive:                100000.0
+
+# ------------------------------------------------- Timer ---------------------------------------------------------
+safe_traj_gen_time:          0.05
+
+#-------------------------------------------------- Other Settings --------------------------------------------
+hpoly_timeserial_path:       /offlines/HpolyTimeSerial.bin
+glb_traj_path:               /offlines/global_trajectory.bin
+corridor_path:               /offlines/corridors.bin
+
+search_forward_idx:          10
+corridor_safe_dist:          0.1
+corridor_edge_release_dist:  0.1
+
+rc_expect_t:                 0.4

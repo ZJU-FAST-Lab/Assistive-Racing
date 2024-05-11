@@ -1,0 +1,12 @@
+<launch>
+  <!-- rviz -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find plan_manage)/launch/test.rviz">
+  </node>
+
+  <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find plan_manage)/launch/real_fly.rviz">
+  </node> -->
+
+  <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find plan_manage)/launch/cmpcc.rviz">
+  </node> -->
+
+</launch>

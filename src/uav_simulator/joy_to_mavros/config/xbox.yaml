@@ -1,0 +1,25 @@
+joy_freq_max: 200.0
+joy_channel_num: 8
+#0~6 axes >=7 buttons >=9 no use
+#0 for roll
+#1 for pitch
+#2 for thrust
+#3 for yaw
+joy_RC0_joy_channel: 3  
+joy_RC1_joy_channel: 4 
+joy_RC2_joy_channel: 1
+joy_RC3_joy_channel: 0
+joy_RC4_joy_channel: 5
+joy_RC5_joy_channel: 2 
+joy_RC6_joy_channel: 6 
+joy_RC7_joy_channel: 7
+
+
+joy_RC0_joy_reverse: 1  
+joy_RC1_joy_reverse: 0 
+joy_RC2_joy_reverse: 0 
+joy_RC3_joy_reverse: 0
+joy_RC4_joy_reverse: 0 
+joy_RC5_joy_reverse: 0  
+joy_RC6_joy_reverse: 0 
+joy_RC7_joy_reverse: 1

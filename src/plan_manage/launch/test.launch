@@ -1,0 +1,85 @@
+<launch>
+  <arg name="init_x" value="0.0"/>
+  <arg name="init_y" value="0.0"/>
+  <arg name="init_z" value="1.0"/>
+  <arg name="drone_odom" value="odom"/>
+  <arg name="drone_cmd" value="position_cmd"/>
+  <arg name="joycmd" value="joy_cmd1"/>
+
+  <node pkg ="plan_manage" name ="fake_circle_node" type ="fake_circle_node" output = "screen">
+    <rosparam file="$(find plan_manage)/config/gate.yaml" command="load" />
+    <remap from="~odometry" to="$(arg drone_odom)"/>
+    <remap from="~circle_odom" to="/circle_odom"/>
+    <param name="map_path" value="$(find plan_manage)/offlines/globalmap.bin" />
+  </node>
+
+  <!-- plan_manage -->
+  <node pkg="plan_manage" type="plan_manage" name="plan_manage" output="screen">
+    <rosparam file="$(find plan_manage)/config/gate.yaml" command="load" />
+    <rosparam file="$(find plan_manage)/config/planner_params.yaml" command="load" />
+    <remap from="~odom" to="$(arg drone_odom)"/>
+    <remap from="~trajectory" to="/trajectory" />
+    <remap from="~desired_yaw" to="/desired_yaw"/>
+    <remap from="~circle_odom" to="/circle_odom"/>
+    <remap from="~joycmd" to="/joy_cmd"/>
+  </node>
+
+  <node pkg="nodelet" type="nodelet" name="manager" args="manager" output="screen">
+    <param name="num_worker_threads" value="16"/>
+  </node>
+
+  <node pkg="nodelet" type="nodelet" name="so3_quadrotor" args="load so3_quadrotor/Nodelet manager" output="screen">
+    <rosparam file="$(find uav_simulator)/config/so3_quadrotor.yaml"/>
+    <param name="simulation_rate" value="1000" />
+    <param name="init_x" value="$(arg init_x)" />
+    <param name="init_y" value="$(arg init_y)" />
+    <param name="init_z" value="$(arg init_z)" />
+    <remap from="~odom" to="$(arg drone_odom)"/>
+    <remap from="~imu" to="imu" />
+    <remap from="~so3cmd" to="so3cmd"/>
+    <remap from="~vis" to="vis"/>
+  </node>
+
+  <node pkg="nodelet" type="nodelet" name="so3_controller" args="load so3_controller/Nodelet manager" output="screen">
+    <rosparam file="$(find uav_simulator)/config/so3_controller.yaml"/>
+    <remap from="~odom" to="$(arg drone_odom)"/>
+    <remap from="~imu" to="imu" />
+    <remap from="~so3cmd" to="so3cmd"/>
+    <remap from="~position_cmd" to="$(arg drone_cmd)"/>
+    <remap from="~joycmd" to="$(arg joycmd)"/>
+  </node>
+
+  <node pkg="odom_visualization" name="odom_visualization" type="odom_visualization" output="log">
+    <remap from="~odom" to="$(arg drone_odom)"/>
+    <param name="color/a" value="1.0"/>
+    <param name="color/r" value="1.0"/>
+    <param name="color/g" value="0.0"/>
+    <param name="color/b" value="0.0"/>
+    <param name="covariance_scale" value="100.0"/>
+    <param name="robot_scale" value="1.0"/>
+  </node>
+
+  <node pkg="traj_server" type="traj_server_node" name="traj_server" output="log">
+    <remap from="~/desired_yaw" to="/desired_yaw"/>
+    <remap from="~/position_command" to="$(arg drone_cmd)"/>
+    <remap from="~/traj_command" to="/traj_cmd"/>
+    <remap from="~/odometry" to="$(arg drone_odom)"/>
+    <remap from="~/trajectory" to="/trajectory"/>
+    <param name="mpc_step" value="20"/>
+    <param name="mpc_sample_dt" value="0.05"/>
+  </node>
+
+  <node pkg="joy" type="joy_node" name="joy_node">
+    <param name="autorepeat_rate" value="200"/>
+  </node>
+
+  <node pkg="joy_to_mavros" type="joy_to_mavros_node" name="joy_to_mavros" output="screen">
+    <rosparam command="load" file="$(find joy_to_mavros)/config/blacksheep.yaml" />
+    <remap from="~in" to="joy_cmd"/>
+  </node>
+
+  <!-- rviz -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find plan_manage)/launch/test.rviz">
+  </node>
+
+</launch>

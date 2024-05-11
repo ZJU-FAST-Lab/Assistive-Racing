@@ -1,0 +1,8 @@
+<launch>
+	<node pkg="joy" type="joy_node" name="joy_node">
+      <param name="autorepeat_rate" value="200"/>
+    </node>
+	<node pkg="joy_to_mavros" type="joy_to_mavros_node" name="joy_to_mavros" output="screen">
+        <rosparam command="load" file="$(find joy_to_mavros)/config/jumper.yaml" />	
+	</node>
+</launch>

@@ -1,0 +1,32 @@
+# Trapezoidal intgral seg num
+K:                           10
+
+# must > 0.0
+# max_vel:                     15.0
+# max_acc:                     20.0
+# max_jrk:                     30.0
+max_vel:                     6.0
+max_acc:                     6.0
+max_jrk:                     10.0
+min_thracc:                  0.0
+max_thracc:                  15.0
+
+rhoT:                        10000.0
+rhoTg:                       1000.0
+pnlP:                        10000.0
+pnlV:                        10000.0
+pnlA:                        10000.0
+pnlJ:                        10000.0
+pnlThr:                      100000.0
+pnlGate:                     1000.0
+pnlCone:                     100000000.0
+
+smoothEps:                   1.0e-2
+
+# for penalizing attitude & drag, only used for fixed-time optimization
+g:                           9.81
+mass:                        0.85
+hor_drag_coeff:              0.4
+ver_drag_coeff:              0.4
+par_drag_coeff:              0.0
+speed_smooth_factor:         0.1
